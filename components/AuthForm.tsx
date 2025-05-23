@@ -12,6 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 import { Form } from "@/components/ui/form";
@@ -95,6 +97,30 @@ const AuthForm = ({ type }: { type: FormType }) => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      const idToken = await result.user.getIdToken();
+      if (!idToken) {
+        toast.error("Google Sign-In Failed. Please try again.");
+        return;
+      }
+
+      await signIn({
+        email: result.user.email!,
+        idToken,
+      });
+
+      toast.success("Signed in with Google successfully.");
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(`Google Sign-In Error: ${error}`);
+    }
+  };
+
   const isSignIn = type === "sign-in";
 
   return (
@@ -143,6 +169,20 @@ const AuthForm = ({ type }: { type: FormType }) => {
             </Button>
           </form>
         </Form>
+
+        <Button
+          className="btn "
+          onClick={handleGoogleSignIn}
+        >
+          <Image
+            src="/google-icon.png"
+            alt="Google Icon"
+            width={20}
+            height={20}
+            className="inline-block"
+          />
+          Sign in with Google
+        </Button>
 
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Have an account already?"}
