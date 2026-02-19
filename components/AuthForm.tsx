@@ -8,6 +8,7 @@ import { auth } from "@/firebase/client";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AUTH_ERRORS } from "@/constants";
 
 import {
   createUserWithEmailAndPassword,
@@ -90,9 +91,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
         toast.success("Signed in successfully.");
         router.push("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toast.error(`There was an error: ${error}`);
+      
+      let errorMessage = "An unexpected error occurred. Please try again.";
+
+      if (error?.code && AUTH_ERRORS[error.code]) {
+        errorMessage = AUTH_ERRORS[error.code];
+      } else if (error instanceof Error) {
+         errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
     }
   };
 

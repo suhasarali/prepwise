@@ -204,6 +204,25 @@ export const interviewCovers = [
   "/yahoo.png",
 ];
 
+export const AUTH_ERRORS: Record<string, string> = {
+  "auth/email-already-in-use":
+    "This email is already registered. Please sign in instead.",
+  "auth/invalid-email": "The email address is invalid.",
+  "auth/operation-not-allowed": "This sign-in method is not enabled.",
+  "auth/weak-password": "The password is too weak. Please use a stronger password.",
+  "auth/user-disabled": "This account has been disabled.",
+  "auth/user-not-found": "No account found with this email.",
+  "auth/wrong-password": "<b>Invalid credentials.</b> Please check your email and password.",
+  "auth/invalid-credential":
+    "Invalid credentials. Please check your email and password.",
+  "auth/too-many-requests":
+    "Too many failed login attempts. Please try again later.",
+  "auth/network-request-failed":
+    "Network error. Please check your internet connection.",
+  "auth/internal-error": "An internal error occurred. Please try again.",
+  "auth/requires-recent-login": "Please sign in again to continue.",
+};
+
 export const dummyInterviews: Interview[] = [
   {
     id: "1",
